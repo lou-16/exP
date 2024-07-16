@@ -1,118 +1,107 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useState } from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
   View,
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  Alert,
+  useColorScheme,
+  Pressable,
+  Dimensions,
+  
 } from 'react-native';
+import { 
+  NavigationContainer 
+} from "@react-navigation/native";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const [BackColor, nextBackColor, buttonColor, buttonPressedColor] = ['#222831', '#393E46' ,'#00ADB5' ,'#EEEEEE'] 
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const App = () =>{
+  const [timesPressed, setTimesPressed] = useState(0);
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const increment = () => {
+    setTimesPressed(timesPressed + 1)
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      {
+        <SafeAreaView
+        style={      
+          {
+            height: Dimensions.get('window').height,
+            width: Dimensions.get('window').width,
+            backgroundColor: BackColor,
+            padding: 0,
+            margin: 0,
+            }
+          }>
+        
+          <SafeAreaView 
+            style={styles.container}>
+              
+              {/**
+               * Top Bar for the base page
+               */}
+              <SafeAreaView
+                style={styles.navbar}>
+
+              </SafeAreaView>
+            
+            <Pressable 
+                style={({pressed}) => 
+  
+                  [
+                    {
+                      backgroundColor: pressed? buttonPressedColor : buttonColor
+                    },
+                    styles.incrementVal
+                  ]}
+  
+                onPress={increment}> 
+              
+              {({pressed}) => (
+                  <Text style={styles.text}>
+                  
+                    {pressed ? 'Pressed!' : 'Press Me'}
+                  
+                  </Text>
+                )}
+                
+  
+            </Pressable>
+          </SafeAreaView>
+      </SafeAreaView>
+      }
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container:{
+    margin: 0,
+    backgroundColor: BackColor
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  navbar:{
+    paddingLeft: 0,
+    marginLeft: 0,
+    backgroundColor: nextBackColor,
+    width: Dimensions.get('screen').width,
+    height: 60,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  incrementVal:{
+    marginTop: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: 300,
+    height: 70,
+    alignItems:'center'
   },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  text:{
+    fontSize: 16
+  }
+})
 
 export default App;
